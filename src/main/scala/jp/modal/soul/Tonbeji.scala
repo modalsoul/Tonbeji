@@ -19,6 +19,12 @@ object Tonbeji extends Plugin {
   val destinationDirName = "public" // TODO build.sbt config
   val directoryStructure = DirectoryStructure(postsDirName, layoutsDirName, includesDirName, destinationDirName)
 
+
+//  unmanagedResources ++= (file("./_posts") ** "*.md").get
+//  unmanagedSources ++= (file("_posts") ** "*.md").get
+
+  watchSources <++= baseDirectory map { path => ((path / "_posts") ** "*.md").get }
+
   override lazy val settings = Seq(
     commands ++= Seq(
       build,
@@ -33,7 +39,9 @@ object Tonbeji extends Plugin {
   // build
   lazy val build = Command.command("build") { state =>
     log("build")
-    new SiteBuild(directoryStructure)
+    println(state)
+
+//    new SiteBuild(directoryStructure)
     state
   }
 

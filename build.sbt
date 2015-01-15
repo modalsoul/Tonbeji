@@ -6,6 +6,11 @@ organization := "jp.modal.soul"
 
 scalaVersion := "2.10.3"
 
-libraryDependencies ++= Seq(
-  "org.fusesource.scalate" % "scalate-core_2.10" % "1.6.1"
+val testDependencies = Seq(
+  "org.scalatest" %% "scalatest" % "2.2.3" % "test"
 )
+
+libraryDependencies ++= Seq(
+  "org.fusesource.scalate" %% "scalate-core" % "1.6.1"
+) ++ testDependencies
+

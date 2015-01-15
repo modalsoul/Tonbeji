@@ -11,12 +11,9 @@ class SiteBuild(directoryStructure:DirectoryStructure) {
   templateEngine.workingDirectory = new File("./tmp")
 
   def buildPosts = {
-
-    directoryStructure.postsDir.posts.foreach { post =>
-
-
-
-    }
+//    for(postFile <- directoryStructure.postsDir.posts) {
+//
+//    }
 
 
     true
