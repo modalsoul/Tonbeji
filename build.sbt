@@ -11,6 +11,7 @@ val testDependencies = Seq(
 )
 
 libraryDependencies ++= Seq(
-  "org.fusesource.scalate" %% "scalate-core" % "1.6.1"
+  "org.fusesource.scalate" %% "scalate-core" % "1.6.1",
+  "com.tristanhunt"        %% "knockoff"     % "0.8.3"
 ) ++ testDependencies
 

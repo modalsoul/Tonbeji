@@ -1,6 +1,6 @@
 package jp.modal.soul
 
-import jp.modal.soul.tonbeji.{SiteBuild, DirectoryStructure}
+import jp.modal.soul.tonbeji.{ Builder, DirectoryStructure }
 import sbt._
 import Keys._
 
@@ -13,17 +13,19 @@ object Tonbeji extends Plugin {
   val mixPanel = settingKey[String]("mixPanel")
   val siteMenu = settingKey[Menu]("menu")
 
-  val postsDirName = "posts"  // TODO build.sbt config
+  val postsDirName = "posts" // TODO build.sbt config
   val layoutsDirName = "layouts" // TODO build.sbt config
   val includesDirName = "includes" // TODO build.sbt config
   val destinationDirName = "public" // TODO build.sbt config
   val directoryStructure = DirectoryStructure(postsDirName, layoutsDirName, includesDirName, destinationDirName)
 
+  // TODO configuration check exist? file? dir?
 
-//  unmanagedResources ++= (file("./_posts") ** "*.md").get
-//  unmanagedSources ++= (file("_posts") ** "*.md").get
+  //  unmanagedResources ++= (file("./_posts") ** "*.md").get
+  //  unmanagedSources ++= (file("_posts") ** "*.md").get
 
-  watchSources <++= baseDirectory map { path => ((path / "_posts") ** "*.md").get }
+  val MARKDOWN_EXTENSION = ".md"
+  watchSources <++= baseDirectory map { path => ((path / "_posts") ** MARKDOWN_EXTENSION).get }
 
   override lazy val settings = Seq(
     commands ++= Seq(
@@ -32,7 +34,7 @@ object Tonbeji extends Plugin {
     )
   )
 
-  def log(command:String, options:Seq[String] = Nil): Unit = {
+  def log(command: String, options: Seq[String] = Nil): Unit = {
     println("[Info]Command: %s %s".format(command, options.mkString(" ")))
   }
 
@@ -41,7 +43,7 @@ object Tonbeji extends Plugin {
     log("build")
     println(state)
 
-//    new SiteBuild(directoryStructure)
+    //    new SiteBuild(directoryStructure)
     state
   }
 
@@ -51,9 +53,8 @@ object Tonbeji extends Plugin {
     state
   }
 
-  case class Author(authorInfo:Pair[Symbol, String]*)
+  case class Author(authorInfo: Pair[Symbol, String]*)
 
-  case class Menu(items:Pair[String, String]*)
+  case class Menu(items: Pair[String, String]*)
 }
-
 
