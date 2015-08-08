@@ -17,19 +17,25 @@ import jp.modal.soul.Tonbeji
 case class DirectoryStructure(postsDir: PostDir,
                               includesDir: File,
                               destinationDir: File,
-                              layouts: Map[String, Layout]) {
+                              layouts: Map[String, Layout],
+                              workingDir: File) {
   val posts = postsDir.postFiles
 }
 object DirectoryStructure {
-  val dotSlash = (name: String) => "./%s".format(name)
-  def apply(postsDirName: String, layoutsDirName: String, includesDirName: String, destinationDirName: String): DirectoryStructure = {
-    val layoutsDir = new File(dotSlash(layoutsDirName))
+  //  val dotSlash = (name: String) => "./%s".format(name)
+  def apply(postsDirPath: String,
+            layoutsDirPath: String,
+            includesDirPath: String,
+            destinationDirPath: String,
+            workingDirPath: String): DirectoryStructure = {
+    val layoutsDir = new File(layoutsDirPath)
     val layouts = getLayouts(layoutsDir)
     DirectoryStructure(
-      PostDir(dotSlash(postsDirName), layouts),
-      new File(dotSlash(includesDirName)),
-      new File(dotSlash(destinationDirName)),
-      layouts)
+      PostDir(postsDirPath, layouts),
+      new File(includesDirPath),
+      new File(destinationDirPath),
+      layouts,
+      new File(workingDirPath))
   }
 
   /**
@@ -37,8 +43,8 @@ object DirectoryStructure {
    * @param dir layouts root dir.
    * @return The name of layout as key and layout as value.
    */
-  def getLayouts(dir: File) = {
-    dir.listFiles().toSeq.filter(_.getName.endsWith(".html")).map {
+  def getLayouts(dir: File): Map[String, Layout] = {
+    dir.listFiles().toSeq.filter(_.getName.endsWith(Layout.LAYOUT_FILE_EXTENSION)).map {
       file => file.getName.substring(0, file.getName.lastIndexOf(".")) -> Layout(file)
     }.toMap
   }
@@ -54,17 +60,10 @@ case class PostDir(dir: File, postFiles: Seq[PostFile])
 object PostDir {
   def apply(dirPath: String, layouts: Map[String, Layout]): PostDir = {
     val dir = new File(dirPath)
-    val files = dir.listFiles().filter(f => f.isFile && f.getName.endsWith(Tonbeji.MARKDOWN_EXTENSION))
+    println("dir.exists() = " + dir.exists())
+    val files = dir.listFiles().filter(f => f.isFile && f.getName.endsWith(PostFile.MARKDOWN_EXTENSION))
     val posts = files.map(f => PostFile(f, layouts))
     PostDir(dir, posts)
   }
-}
-
-/**
- * Template that wrap posts.
- * @param file
- */
-case class Layout(file: File) {
-
 }
 

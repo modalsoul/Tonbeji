@@ -2,6 +2,7 @@ package jp.modal.soul.tonbeji
 
 import java.io.File
 
+import scala.collection.mutable
 import scala.collection.mutable.{ Map => MutableMap }
 import scala.reflect.ClassTag
 
@@ -10,7 +11,7 @@ import scala.reflect.ClassTag
  */
 class SettingFormatException extends Exception
 
-trait SettingParser {
+trait FileParser {
   val SEPARATOR = "---"
 
   val settingKeys: Map[String, Boolean]
@@ -61,6 +62,24 @@ trait SettingParser {
 
     for ((key, value) <- settingKeyValues) yield {
       parseSetting(key, value)
+    }
+  }
+
+  /**
+   * Returns body part.
+   * @return Markdown body string.
+   */
+  def getBody(file: File): String = {
+    FileOperator.readAndExecute(file) { buffer =>
+      var line = buffer.readLine()
+      val bodyBuilder = new mutable.StringBuilder()
+      var separatorCount = 0
+      while (line != null) {
+        if (separatorCount > 1) bodyBuilder.append("%s\n".format(line))
+        if (line.trim == PostFile.SEPARATOR) separatorCount = separatorCount + 1
+        line = buffer.readLine()
+      }
+      bodyBuilder.result()
     }
   }
 }

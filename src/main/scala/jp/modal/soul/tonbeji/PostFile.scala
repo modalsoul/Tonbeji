@@ -2,11 +2,6 @@ package jp.modal.soul.tonbeji
 
 import java.io.File
 
-import com.tristanhunt.knockoff.DefaultDiscounter._
-
-import scala.collection.mutable
-import scala.xml.Node
-
 /**
  * Created by imae on 2015/01/17.
  */
@@ -15,7 +10,15 @@ case class PostFile(file: File,
                     title: String,
                     tags: Seq[String],
                     categories: Seq[String],
-                    others: Map[String, String]) {
+                    others: Map[String, String]) extends MarkdownBinding {
+
+  val body = PostFile.getBody(file)
+  override val settings: Map[String, Object] = Map(
+    PostFile.LAYOUT -> layout,
+    PostFile.TITLE -> title,
+    PostFile.TAGS -> tags,
+    PostFile.CATEGORIES -> categories) ++ others
+
   /**
    * Returns posted date from post filename.
    * @return
@@ -39,24 +42,6 @@ case class PostFile(file: File,
   }
 
   /**
-   * Returns body part of post.
-   * @return Markdown body string.
-   */
-  def body: String = {
-    FileOperator.readAndExecute(file) { buffer =>
-      var line = buffer.readLine()
-      val bodyBuilder = new mutable.StringBuilder()
-      var separatorCount = 0
-      while (line != null) {
-        if (separatorCount > 1) bodyBuilder.append("%s\n".format(line))
-        if (line.trim == PostFile.SEPARATOR) separatorCount = separatorCount + 1
-        line = buffer.readLine()
-      }
-      bodyBuilder.result()
-    }
-  }
-
-  /**
    * Returns path that is part of post uri.
    * @return Path that is composed by category, posted date and title.
    */
@@ -66,18 +51,11 @@ case class PostFile(file: File,
       case _   => "%s/%s/%s".format(categories.head, postDate, fileTitle)
     }
   }
-
-  /**
-   * Returns body part as Node.
-   * @return
-   */
-  def contents: Node = toXHTML(knockoff(body))
-
 }
 
 class PostFileFormatException() extends SettingFormatException
 
-object PostFile extends SettingParser {
+object PostFile extends FileParser {
   case class PostFileParseException() extends Exception
   case class PostFileNameException() extends Exception
 
@@ -86,6 +64,7 @@ object PostFile extends SettingParser {
   case class TagsNotFoundException() extends Exception
   case class CategoriesNotFoundException() extends Exception
 
+  val MARKDOWN_EXTENSION = ".md"
   val LAYOUT = "layout"
   val TITLE = "title"
   val TAGS = "tags"
@@ -130,7 +109,7 @@ object PostFile extends SettingParser {
   }
 
   def apply(file: File, layouts: Map[String, Layout]): PostFile = {
-    val settings = getSettings(file)
+    val settings = getSettings[PostFileFormatException](file)
 
     try {
       val layout = getLayout(layouts, settings)

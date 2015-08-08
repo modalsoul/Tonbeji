@@ -12,7 +12,7 @@ import scala.collection.mutable.ArrayBuffer
  */
 class FileReaderSpec extends FlatSpec with Matchers {
   "readAndExecute" should "success" in {
-    val f = new File("./src/test/resources/posts/2014-01-16-test.md")
+    val f = new File("./src/test/resources/ok/posts/2014-01-16-test.md")
     val settingLines = FileOperator.readAndExecute(f) { buffer =>
       val lines = ArrayBuffer[String]()
       lines.append(buffer.readLine())

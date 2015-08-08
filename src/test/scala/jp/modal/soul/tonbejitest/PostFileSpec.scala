@@ -9,8 +9,8 @@ import org.scalatest.{ Matchers, FlatSpec }
  * Created by imae on 2015/01/17.
  */
 class PostFileSpec extends FlatSpec with Matchers {
-  val file = new File("./src/test/resources/posts/2014-01-16-test.md")
-  val postLayout = new File("./src/test/resources/layouts/post.html")
+  val file = new File("./src/test/resources/ok/posts/2014-01-16-test.md")
+  val postLayout = new File("./src/test/resources/ok/layouts/post.html")
   "post file" should "be PostFile instance" in {
     val postFile = PostFile(file, Map("post" -> Layout(postLayout)))
 
@@ -24,7 +24,7 @@ class PostFileSpec extends FlatSpec with Matchers {
 
   "contents" should "be generate" in {
     val postFile = PostFile(file, Map("post" -> Layout(postLayout)))
-    val contents = postFile.contents
+    val contents = postFile.markdownContents
     contents.isEmpty should be(false)
   }
 }

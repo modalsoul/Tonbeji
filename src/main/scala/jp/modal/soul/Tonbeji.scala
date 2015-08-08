@@ -1,6 +1,6 @@
 package jp.modal.soul
 
-import jp.modal.soul.tonbeji.{ Builder, DirectoryStructure }
+import jp.modal.soul.tonbeji.{ SiteBuilder, DirectoryStructure }
 import sbt._
 import Keys._
 
@@ -13,11 +13,12 @@ object Tonbeji extends Plugin {
   val mixPanel = settingKey[String]("mixPanel")
   val siteMenu = settingKey[Menu]("menu")
 
-  val postsDirName = "posts" // TODO build.sbt config
-  val layoutsDirName = "layouts" // TODO build.sbt config
-  val includesDirName = "includes" // TODO build.sbt config
-  val destinationDirName = "public" // TODO build.sbt config
-  val directoryStructure = DirectoryStructure(postsDirName, layoutsDirName, includesDirName, destinationDirName)
+  val postsDirPath = "./src/test/resources/posts" // TODO build.sbt config
+  val layoutsDirPath = "./src/test/resources/layouts" // TODO build.sbt config
+  val includesDirPath = "./src/test/resources/includes" // TODO build.sbt config
+  val destinationDirPath = "./src/test/resources/public" // TODO build.sbt config
+  val workingDirPath = "./src/test/resources/working" // TODO build.sbt config
+  val directoryStructure = DirectoryStructure(postsDirPath, layoutsDirPath, includesDirPath, destinationDirPath, workingDirPath)
 
   // TODO configuration check exist? file? dir?
 
