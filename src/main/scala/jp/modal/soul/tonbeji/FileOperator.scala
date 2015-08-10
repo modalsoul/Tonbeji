@@ -2,6 +2,8 @@ package jp.modal.soul.tonbeji
 
 import java.io._
 
+import jp.modal.soul.tonbeji.util.Loan
+
 import scala.collection.mutable.ArrayBuffer
 
 /**

@@ -35,7 +35,7 @@ class SiteBuilder(directoryStructure: DirectoryStructure) {
           println("contents = " + contents)
           val t = TemplateSource.fromText("tmp.mustache", layout.body)
           val fuga = layout.settings + ("contents" -> contents)
-          
+
           buildLayout(layout.parentLayout, templateEngine.layout(t, fuga))
       }
     } finally {

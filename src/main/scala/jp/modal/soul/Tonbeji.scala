@@ -6,26 +6,26 @@ import Keys._
 
 object Tonbeji extends Plugin {
 
-  val productionUrl = settingKey[String]("production url")
-  val title = settingKey[String]("title")
-  val author = settingKey[Author]("author")
-  val googleAnalytics = settingKey[String]("googleAnalytics")
-  val mixPanel = settingKey[String]("mixPanel")
-  val siteMenu = settingKey[Menu]("menu")
+  final val productionUrl = settingKey[String]("production url")
+  final val title = settingKey[String]("title")
+  final val author = settingKey[Author]("author")
+  final val googleAnalytics = settingKey[String]("googleAnalytics")
+  final val mixPanel = settingKey[String]("mixPanel")
+  final val siteMenu = settingKey[Menu]("menu")
 
-  val postsDirPath = "./src/test/resources/posts" // TODO build.sbt config
-  val layoutsDirPath = "./src/test/resources/layouts" // TODO build.sbt config
-  val includesDirPath = "./src/test/resources/includes" // TODO build.sbt config
-  val destinationDirPath = "./src/test/resources/public" // TODO build.sbt config
-  val workingDirPath = "./src/test/resources/working" // TODO build.sbt config
-  val directoryStructure = DirectoryStructure(postsDirPath, layoutsDirPath, includesDirPath, destinationDirPath, workingDirPath)
+  final val postsDirPath = "./src/test/resources/posts" // TODO build.sbt config
+  final val layoutsDirPath = "./src/test/resources/layouts" // TODO build.sbt config
+  final val includesDirPath = "./src/test/resources/includes" // TODO build.sbt config
+  final val destinationDirPath = "./src/test/resources/public" // TODO build.sbt config
+  final val workingDirPath = "./src/test/resources/working" // TODO build.sbt config
+  final val directoryStructure = DirectoryStructure(postsDirPath, layoutsDirPath, includesDirPath, destinationDirPath, workingDirPath)
 
   // TODO configuration check exist? file? dir?
 
   //  unmanagedResources ++= (file("./_posts") ** "*.md").get
   //  unmanagedSources ++= (file("_posts") ** "*.md").get
 
-  val MARKDOWN_EXTENSION = ".md"
+  final val MARKDOWN_EXTENSION = ".md"
   watchSources <++= baseDirectory map { path => ((path / "_posts") ** MARKDOWN_EXTENSION).get }
 
   override lazy val settings = Seq(

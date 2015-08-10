@@ -1,4 +1,4 @@
-package jp.modal.soul.tonbeji
+package jp.modal.soul.tonbeji.util
 
 /**
  * Created by imae on 2015/01/17.
