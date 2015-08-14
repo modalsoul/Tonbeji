@@ -6,8 +6,6 @@ import java.util
  * Created by imae on 2015/08/08.
  */
 trait FrontMatter {
-  private final val TRIPLE_DASHED_LINE = "---"
-
   def frontMatterMap(lines: Seq[String]): java.util.HashMap[String, Object] = {
     val map = new util.HashMap[String, Object]()
     lines.map(parseLine).foreach { case (key, value) => map.put(key, value) }

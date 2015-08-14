@@ -12,6 +12,6 @@ val testDependencies = Seq(
 
 libraryDependencies ++= Seq(
   "org.scalatra.scalate" %% "scalate-core" % "1.7.0",
-  "com.tristanhunt"        %% "knockoff"     % "0.8.3"
+  "com.tristanhunt"      %% "knockoff"     % "0.8.3"
 ) ++ testDependencies
 

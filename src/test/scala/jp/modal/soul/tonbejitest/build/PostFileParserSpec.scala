@@ -3,6 +3,7 @@ package jp.modal.soul.tonbejitest.build
 import java.util
 
 import jp.modal.soul.tonbeji.build.PostFileParser
+import jp.modal.soul.tonbeji.entity.Post
 import org.scalatest.{ Matchers, FlatSpec }
 
 /**
@@ -14,8 +15,11 @@ class PostFileParserSpec extends FlatSpec with Matchers {
     val fileBody =
       """
         |---
+        |layout:post
         |title:Hoge
         |tags:[foo,bar]
+        |categories:[sample]
+        |comment:This is comment.
         |---
         |# Hello
         |* 1
@@ -29,17 +33,32 @@ class PostFileParserSpec extends FlatSpec with Matchers {
         |</li><li>3
         |</li></ul>""".stripMargin
 
+    val layout = "post"
     val title = "Hoge"
-
     val tags = new util.ArrayList[String]()
     tags.add("foo")
     tags.add("bar")
-    val expected = new util.HashMap[String, Object]()
-    expected.put("title", title)
-    expected.put("tags", tags)
-    expected.put("contents", contents)
+    val categories = new util.ArrayList[String]()
+    categories.add("sample")
+    val comment = "This is comment."
+    val otherSettings = new util.HashMap[String, Object]()
+    otherSettings.put("layout", layout)
+    otherSettings.put("title", title)
+    otherSettings.put("tags", tags)
+    otherSettings.put("categories", categories)
+    otherSettings.put("comment", comment)
+    otherSettings.put("contents", contents)
 
-    val parser = new PostFileParser(fileBody)
+    val expected = Post(
+      name = "test",
+      layout = Option("post"),
+      title = "Hoge",
+      tags = List("foo", "bar"),
+      categories = List("sample"),
+      settings = otherSettings
+    )
+
+    val parser = new PostFileParser("test", fileBody)
     assert(parser.parsed == expected)
   }
 

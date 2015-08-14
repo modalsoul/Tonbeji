@@ -1,8 +1,10 @@
 package jp.modal.soul.tonbeji.build
 
-class LayoutFileParser(override val fileBody:String) extends Parser with FrontMatter with Liquid {
+import jp.modal.soul.tonbeji.entity.Layout
+
+class LayoutFileParser(fileName: String, override val fileBody: String) extends Parser with FrontMatter {
   def parsed = {
     val frontMatter = frontMatterMap(frontMatterPart)
-    parse(contentsPart, frontMatter)
+    Layout(fileName, contentsPart, frontMatter)
   }
 }
