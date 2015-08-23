@@ -1,24 +1,16 @@
 package jp.modal.soul
 
-import jp.modal.soul.tonbeji.{ SiteBuilder, DirectoryStructure }
+import jp.modal.soul.tonbeji.setting.GlobalSetting
 import sbt._
-import Keys._
+import sbt.Keys._
 
-object Tonbeji extends Plugin {
-
-  final val productionUrl = settingKey[String]("production url")
-  final val title = settingKey[String]("title")
-  final val author = settingKey[Author]("author")
-  final val googleAnalytics = settingKey[String]("googleAnalytics")
-  final val mixPanel = settingKey[String]("mixPanel")
-  final val siteMenu = settingKey[Menu]("menu")
+object Tonbeji extends Plugin with GlobalSetting {
 
   final val postsDirPath = "./src/test/resources/posts" // TODO build.sbt config
   final val layoutsDirPath = "./src/test/resources/layouts" // TODO build.sbt config
   final val includesDirPath = "./src/test/resources/includes" // TODO build.sbt config
   final val destinationDirPath = "./src/test/resources/public" // TODO build.sbt config
   final val workingDirPath = "./src/test/resources/working" // TODO build.sbt config
-  final val directoryStructure = DirectoryStructure(postsDirPath, layoutsDirPath, includesDirPath, destinationDirPath, workingDirPath)
 
   // TODO configuration check exist? file? dir?
 
@@ -35,16 +27,21 @@ object Tonbeji extends Plugin {
     )
   )
 
+  //  def getSetting[T](key: SettingKey[T])(implicit state: State): Option[T] = {
+  //    val extracted = Project.extract(state)
+  //    key in extracted.currentRef get (extracted.structure.data)
+  //  }
+
   def log(command: String, options: Seq[String] = Nil): Unit = {
     println("[Info]Command: %s %s".format(command, options.mkString(" ")))
   }
 
   // build
-  lazy val build = Command.command("build") { state =>
+  lazy val build = Command.command("build") { implicit state =>
     log("build")
-    println(state)
 
-    //    new SiteBuild(directoryStructure)
+    val gs = this.asInstanceOf[GlobalSetting].get()
+    println(gs)
     state
   }
 
@@ -54,8 +51,5 @@ object Tonbeji extends Plugin {
     state
   }
 
-  case class Author(authorInfo: Pair[Symbol, String]*)
-
-  case class Menu(items: Pair[String, String]*)
 }
 
